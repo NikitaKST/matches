@@ -1,19 +1,48 @@
 // healthIndicator.test.js
-import { checkHealthStatus } from '../healthIndicator';
+import { sortHeroesByHealth } from '../healthIndicator';
 
-describe('checkHealthStatus', () => {
-  it('should return "Green" when health is more than 50', () => {
-    const character = { name: 'Маг', health: 90 };
-    expect(checkHealthStatus(character)).toBe('Green');
+describe('sortHeroesByHealth', () => {
+  it('should sort heroes by health in descending order', () => {
+    const heroes = [
+      { name: 'мечник', health: 10 },
+      { name: 'маг', health: 100 },
+      { name: 'лучник', health: 80 },
+    ];
+
+    const sortedHeroes = sortHeroesByHealth(heroes);
+
+    expect(sortedHeroes).toEqual([
+      { name: 'маг', health: 100 },
+      { name: 'лучник', health: 80 },
+      { name: 'мечник', health: 10 },
+    ]);
   });
 
-  it('should return "Yellow" when health is between 15 and 50', () => {
-    const character = { name: 'Маг', health: 30 };
-    expect(checkHealthStatus(character)).toBe('Yellow');
+  it('should handle an empty array', () => {
+    const heroes = [];
+    const sortedHeroes = sortHeroesByHealth(heroes);
+    expect(sortedHeroes).toEqual([]);
   });
 
-  it('should return "Red" when health is less than 15', () => {
-    const character = { name: 'Маг', health: 10 };
-    expect(checkHealthStatus(character)).toBe('Red');
+  it('should handle an array with a single hero', () => {
+    const heroes = [{ name: 'воин', health: 50 }];
+    const sortedHeroes = sortHeroesByHealth(heroes);
+    expect(sortedHeroes).toEqual([{ name: 'воин', health: 50 }]);
+  });
+
+  it('should handle ties in health by maintaining original order', () => {
+    const heroes = [
+      { name: 'воин', health: 70 },
+      { name: 'маг', health: 60 },
+      { name: 'лучник', health: 70 },
+    ];
+
+    const sortedHeroes = sortHeroesByHealth(heroes);
+
+    expect(sortedHeroes).toEqual([
+      { name: 'воин', health: 70 },
+      { name: 'лучник', health: 70 },
+      { name: 'маг', health: 60 },
+    ]);
   });
 });
